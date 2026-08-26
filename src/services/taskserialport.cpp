@@ -1,4 +1,5 @@
 #include "taskserialport.h"
+#include "device_config.h"
 #include <QDebug>
 #include <QElapsedTimer>
 
@@ -91,13 +92,6 @@ void taskserialport::Init_SerialPort()
         return;
     }
 
-    // serialPort->write("AT\r\n");
-    // serialPort->write("AT+CWMODE=2\r\n");
-    // serialPort->write("AT+RST\r\n");
-    // serialPort->write("AT+CWSAP=\"esp8266\",\"wenjie01\",5,3\r\n");
-    // serialPort->write("AT+CIPMUX=1\r\n");
-    // serialPort->write("AT+CIPSERVER=1,8080\r\n");
-
     if (!sendATCommand("AT\r\n","OK",60)) {
         qDebug() << "No Response to:" << "AT\r\n";
         return ;
@@ -111,8 +105,11 @@ void taskserialport::Init_SerialPort()
         return ;
     }
 
-    if (!sendATCommand("AT+CWSAP=\"esp8266\",\"wenjie01\",5,3\r\n","OK",100)){
-        qDebug() << "No Response to:" << "AT+CWSAP=\"esp8266\",\"wenjie01\",5,3\r\n";
+    const QString wifiCommand = QStringLiteral("AT+CWSAP=\"%1\",\"%2\",5,3\r\n")
+                                    .arg(DeviceConfig::kWifiAccessPointSsid,
+                                         DeviceConfig::kWifiAccessPointPassword);
+    if (!sendATCommand(wifiCommand.toStdString(), "OK", 100)) {
+        qDebug() << "No response while configuring the ESP8266 access point.";
         return ;
     }
 

@@ -1,0 +1,27 @@
+# Qt Creator user settings
+*.pro.user
+*.pro.user.*
+*.qmake.stash
+
+# qmake and compiler outputs
+build-*/
+debug/
+release/
+Makefile*
+object_script.*
+moc_*.cpp
+moc_*.h
+qrc_*.cpp
+ui_*.h
+*.o
+*.obj
+*.exe
+*.dll
+*.pdb
+
+# Local device credentials and Wi-Fi settings
+src/config/device_config.h
+
+# Operating system files
+.DS_Store
+Thumbs.db

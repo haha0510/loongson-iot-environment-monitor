@@ -1,4 +1,5 @@
 #include "taskmqtt.h"
+#include "device_config.h"
 
 taskMqtt::taskMqtt(QObject *parent)
     : QObject{parent}
@@ -72,26 +73,19 @@ void taskMqtt::Init_MQTT()
 {
     mqttClient = new QMQTT::Client;
 
-    // 华为云IoT平台MQTT连接配置
     Init_HuaweiCloud_MQTT();
 }
 void taskMqtt::Init_HuaweiCloud_MQTT()
 {
-    // ========== 华为云IoT平台连接参数配置接口 ==========
-    // 请在此处填入您的华为云IoT设备连接信息
-
-    QString m_strDeviceId = "685a734ad582f2001834985f_loong_1";           // 设备ID - 请填入您的设备ID
-    QString m_strDeviceSecret = "3246a4eab894b351f7d199a8d2f9aa302fece2d1204e126c429e044f1a1a082a";       // 设备密钥 - 请填入您的设备密钥
-
-    // 华为云IoT平台MQTT服务器地址格式
-    QString m_strHostName = "5930c00e73.st1.iotda-device.cn-north-4.myhuaweicloud.com";
+    const QString &m_strDeviceId = DeviceConfig::kMqttDeviceId;
+    const QString &m_strDeviceSecret = DeviceConfig::kMqttDeviceSecret;
+    const QString &m_strHostName = DeviceConfig::kMqttHostName;
 
     // 华为云IoT平台主题配置
     m_strPubTopic = "$oc/devices/" + m_strDeviceId + "/sys/properties/report";     // 属性上报主题
     m_strSubTopic = "$oc/devices/" + m_strDeviceId + "/sys/properties/set";        // 属性设置主题
 
-    // 客户端ID配置
-    QString clientId = "685a734ad582f2001834985f_loong_1_0_0_2025062508";
+    const QString &clientId = DeviceConfig::kMqttClientId;
 
     // MQTT连接参数设置
     mqttClient->setHostName(m_strHostName);     // 设置服务器地址

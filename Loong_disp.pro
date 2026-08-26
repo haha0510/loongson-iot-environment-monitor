@@ -1,87 +1,80 @@
-QT       += core gui
-QT += charts  network serialport
+QT += core gui charts network serialport
 
-
-# LIBS += -lssl
-# LIBS += -lcrypto
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
 
-# You can make your code fail to compile if it uses deprecated APIs.
-# In order to do so, uncomment the following line.
-#DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
+INCLUDEPATH += \
+    $$PWD/src/ui \
+    $$PWD/src/services \
+    $$PWD/src/config \
+    $$PWD/third_party
 
 SOURCES += \
-    main.cpp \
-    node1.cpp \
-    node2.cpp \
-    node3.cpp \
-    setting.cpp \
-    taskmqtt.cpp \
-    taskserialport.cpp \
-    taskwarning.cpp \
-    widget.cpp \
-    mqtt/qmqtt_client.cpp \
-    mqtt/qmqtt_client_p.cpp \
-    mqtt/qmqtt_frame.cpp \
-    mqtt/qmqtt_message.cpp \
-    mqtt/qmqtt_network.cpp \
-    mqtt/qmqtt_router.cpp \
-    mqtt/qmqtt_routesubscription.cpp \
-    mqtt/qmqtt_socket.cpp \
-    mqtt/qmqtt_ssl_socket.cpp \
-    mqtt/qmqtt_timer.cpp \
-    mqtt/qmqtt_websocket.cpp \
-    mqtt/qmqtt_websocketiodevice.cpp
+    src/main.cpp \
+    src/ui/node1.cpp \
+    src/ui/node2.cpp \
+    src/ui/node3.cpp \
+    src/ui/setting.cpp \
+    src/ui/widget.cpp \
+    src/services/taskmqtt.cpp \
+    src/services/taskserialport.cpp \
+    src/services/taskwarning.cpp \
+    third_party/mqtt/qmqtt_client.cpp \
+    third_party/mqtt/qmqtt_client_p.cpp \
+    third_party/mqtt/qmqtt_frame.cpp \
+    third_party/mqtt/qmqtt_message.cpp \
+    third_party/mqtt/qmqtt_network.cpp \
+    third_party/mqtt/qmqtt_router.cpp \
+    third_party/mqtt/qmqtt_socket.cpp \
+    third_party/mqtt/qmqtt_ssl_socket.cpp \
+    third_party/mqtt/qmqtt_timer.cpp \
+    third_party/mqtt/qmqtt_websocket.cpp \
+    third_party/mqtt/qmqtt_websocketiodevice.cpp
 
 HEADERS += \
-    node1.h \
-    node2.h \
-    node3.h \
-    setting.h \
-    taskmqtt.h \
-    taskserialport.h \
-    taskwarning.h \
-    widget.h \
-    mqtt/qmqtt.h \
-    mqtt/qmqtt_client.h \
-    mqtt/qmqtt_client_p.h \
-    mqtt/qmqtt_frame.h \
-    mqtt/qmqtt_global.h \
-    mqtt/qmqtt_message.h \
-    mqtt/qmqtt_message_p.h \
-    mqtt/qmqtt_network_p.h \
-    mqtt/qmqtt_networkinterface.h \
-    mqtt/qmqtt_routedmessage.h \
-    mqtt/qmqtt_router.h \
-    mqtt/qmqtt_routesubscription.h \
-    mqtt/qmqtt_socket_p.h \
-    mqtt/qmqtt_socketinterface.h \
-    mqtt/qmqtt_ssl_socket_p.h \
-    mqtt/qmqtt_timer_p.h \
-    mqtt/qmqtt_timerinterface.h \
-    mqtt/qmqtt_websocket_p.h \
-    mqtt/qmqtt_websocketiodevice_p.h
+    src/ui/node1.h \
+    src/ui/node2.h \
+    src/ui/node3.h \
+    src/ui/setting.h \
+    src/ui/widget.h \
+    src/services/taskmqtt.h \
+    src/services/taskserialport.h \
+    src/services/taskwarning.h \
+    src/config/device_config.example.h \
+    third_party/mqtt/qmqtt.h \
+    third_party/mqtt/qmqtt_client.h \
+    third_party/mqtt/qmqtt_client_p.h \
+    third_party/mqtt/qmqtt_frame.h \
+    third_party/mqtt/qmqtt_global.h \
+    third_party/mqtt/qmqtt_message.h \
+    third_party/mqtt/qmqtt_message_p.h \
+    third_party/mqtt/qmqtt_network_p.h \
+    third_party/mqtt/qmqtt_networkinterface.h \
+    third_party/mqtt/qmqtt_routedmessage.h \
+    third_party/mqtt/qmqtt_router.h \
+    third_party/mqtt/qmqtt_routesubscription.h \
+    third_party/mqtt/qmqtt_socket_p.h \
+    third_party/mqtt/qmqtt_socketinterface.h \
+    third_party/mqtt/qmqtt_ssl_socket_p.h \
+    third_party/mqtt/qmqtt_timer_p.h \
+    third_party/mqtt/qmqtt_timerinterface.h \
+    third_party/mqtt/qmqtt_websocket_p.h \
+    third_party/mqtt/qmqtt_websocketiodevice_p.h
 
 FORMS += \
-    node1.ui \
-    node2.ui \
-    node3.ui \
-    setting.ui \
-    widget.ui
+    src/ui/node1.ui \
+    src/ui/node2.ui \
+    src/ui/node3.ui \
+    src/ui/setting.ui \
+    src/ui/widget.ui
 
 SUBDIRS += \
-     mqtt/qmqtt.pro
+    third_party/mqtt/qmqtt.pro
 
 DISTFILES += \
-    mqtt/qmqtt.pri \
-    mqtt/qmqtt.qbs
-# Default rules for deployment.
-qnx: target.path = /tmp/$${TARGET}/bin
-else: unix:!android: target.path = /opt/$${TARGET}/bin
-!isEmpty(target.path): INSTALLS += target
-
+    third_party/mqtt/qmqtt.pri \
+    third_party/mqtt/qmqtt.qbs
 
 RESOURCES += \
-    pic/pic.qrc
+    resources/pic/pic.qrc
