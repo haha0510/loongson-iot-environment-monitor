@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/">
+        <file>back.png</file>
+        <file>node2.png</file>
+        <file>node3.png</file>
+        <file>node_pic.png</file>
+        <file>pic.qrc</file>
+        <file>set.png</file>
+        <file>humi1_image.png</file>
+        <file>light1_img.png</file>
+        <file>smog1_img.png</file>
+        <file>temp1_img.png</file>
+    </qresource>
+</RCC>

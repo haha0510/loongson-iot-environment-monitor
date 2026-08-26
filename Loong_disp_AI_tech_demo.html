@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>龙芯多节点环境监测系统 - 技术演示</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <style>
+        body { background: #000000; }
+        .tech-gradient { background: linear-gradient(135deg, rgba(0, 174, 239, 0.7), rgba(0, 174, 239, 0.3)); }
+        .card-bg { background: #1a1a1a; border: 1px solid #333; }
+        .highlight-color { color: #00AEEF; }
+        .code-card { background: #1e1e1e; border: 1px solid #333; }
+        .fade-in { opacity: 0; transform: translateY(20px); transition: all 0.6s ease; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body class="text-white font-sans">
+    <!-- 主标题区域 -->
+    <div class="container mx-auto px-6 py-12">
+        <div class="text-center mb-16 fade-in">
+            <h1 class="text-6xl font-bold mb-4 highlight-color">龙芯多节点环境监测系统</h1>
+            <h2 class="text-2xl text-gray-400">Loongson Multi-Node Environmental Monitoring System</h2>
+            <div class="w-32 h-1 tech-gradient mx-auto mt-6 rounded-full"></div>
+        </div>
+
+        <!-- 项目概述主卡片 -->
+        <div class="card-bg rounded-xl p-8 mb-12 fade-in">
+            <div class="flex items-center mb-6">
+                <i class="fas fa-microchip text-3xl highlight-color mr-4"></i>
+                <h2 class="text-3xl font-bold">项目概述</h2>
+            </div>
+            <p class="text-lg text-gray-300 leading-relaxed">
+                基于Qt框架开发的分布式环境监测系统，集成MQTT云端通信、多传感器数据采集、实时图表可视化和智能预警功能。
+                系统支持多节点并发监测，实现温度、湿度、光照强度和烟雾浓度的实时采集与分析。
+            </p>
+        </div>
+
+        <!-- 核心技术点网格 -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 mb-12">
+            <!-- 性能指标卡片 -->
+            <div class="card-bg rounded-lg p-6 text-center fade-in">
+                <div class="text-5xl font-bold highlight-color mb-2">3</div>
+                <div class="text-sm text-gray-400 mb-1">NODES</div>
+                <div class="text-xs text-gray-500">并发监测节点数</div>
+            </div>
+            
+            <div class="card-bg rounded-lg p-6 text-center fade-in">
+                <div class="text-5xl font-bold highlight-color mb-2">115200</div>
+                <div class="text-sm text-gray-400 mb-1">BAUD RATE</div>
+                <div class="text-xs text-gray-500">串口通信波特率</div>
+            </div>
+
+            <div class="card-bg rounded-lg p-6 text-center fade-in">
+                <div class="text-5xl font-bold highlight-color mb-2">5s</div>
+                <div class="text-sm text-gray-400 mb-1">TIMEOUT</div>
+                <div class="text-xs text-gray-500">节点离线检测超时</div>
+            </div>
+
+            <div class="card-bg rounded-lg p-6 text-center fade-in">
+                <div class="text-5xl font-bold highlight-color mb-2">4</div>
+                <div class="text-sm text-gray-400 mb-1">SENSORS</div>
+                <div class="text-xs text-gray-500">每节点传感器数量</div>
+            </div>
+
+            <div class="card-bg rounded-lg p-6 text-center fade-in">
+                <div class="text-5xl font-bold highlight-color mb-2">8080</div>
+                <div class="text-sm text-gray-400 mb-1">TCP PORT</div>
+                <div class="text-xs text-gray-500">ESP8266服务器端口</div>
+            </div>
+        </div>
+
+        <!-- 技术架构卡片 -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            <div class="card-bg rounded-lg p-6 fade-in">
+                <i class="fas fa-sitemap text-2xl highlight-color mb-3"></i>
+                <h3 class="text-xl font-bold mb-2">多线程架构</h3>
+                <div class="text-xs text-gray-500 mb-2">Multi-Threading</div>
+                <p class="text-sm text-gray-400">串口处理、MQTT通信、定时器和警告显示分别运行在独立线程中，确保系统响应性能</p>
+            </div>
+
+            <div class="card-bg rounded-lg p-6 fade-in">
+                <i class="fas fa-cloud text-2xl highlight-color mb-3"></i>
+                <h3 class="text-xl font-bold mb-2">MQTT云端通信</h3>
+                <div class="text-xs text-gray-500 mb-2">Cloud Communication</div>
+                <p class="text-sm text-gray-400">集成华为云IoT平台，支持设备数据上报和远程控制指令下发</p>
+            </div>
+
+            <div class="card-bg rounded-lg p-6 fade-in">
+                <i class="fas fa-chart-line text-2xl highlight-color mb-3"></i>
+                <h3 class="text-xl font-bold mb-2">实时数据可视化</h3>
+                <div class="text-xs text-gray-500 mb-2">Real-time Visualization</div>
+                <p class="text-sm text-gray-400">基于Qt Charts的平滑曲线图表，支持时间序列数据的动态展示</p>
+            </div>
+        </div>
+
+        <!-- 代码展示卡片 -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-bold mb-6 flex items-center">
+                <i class="fas fa-code highlight-color mr-4"></i>
+                核心代码实现
+            </h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- MQTT数据发送核心函数 -->
+                <div class="code-card rounded-lg p-6 fade-in">
+                    <h3 class="text-lg font-bold mb-3 highlight-color">MQTT数据上报核心函数</h3>
+                    <pre><code class="language-cpp">void taskMqtt::TaskSendToCloud() {
+    // 传感器数据转换
+    int num_temp1 = stringTemp1.toInt();
+    int num_humi1 = stringHumi1.toInt();
+    int num_light1 = stringLight1.toInt();
+    int num_smog1 = stringSmog1.toInt();
+    
+    // JSON消息构建
+    QString mqttMessage = "{"
+        "\"services\": [{"
+        "\"service_id\": \"loongson\","
+        "\"properties\": {"
+        "\"Node_1_Temperature\": " + QString::number(num_temp1) + ","
+        "\"Node_1_Humidity\": " + QString::number(num_humi1) + ","
+        "\"Node_1_Light\": " + QString::number(num_light1) + ","
+        "\"Node_1_Smog\": " + QString::number(num_smog1) +
+        "}}]}";
+    
+    // 发布MQTT消息
+    QMQTT::Message send_msg(136, m_strPubTopic, 
+                           mqttMessage.toLocal8Bit(), 0);
+    mqttClient->publish(send_msg);
+}</code></pre>
+                </div>
+
+                <!-- 串口初始化函数 -->
+                <div class="code-card rounded-lg p-6 fade-in">
+                    <h3 class="text-lg font-bold mb-3 highlight-color">串口通信初始化函数</h3>
+                    <pre><code class="language-cpp">void taskserialport::Init_SerialPort() {
+    // 搜索可用串口
+    QList<QSerialPortInfo> serialPortInfo = 
+        QSerialPortInfo::availablePorts();
+    
+    // 自动选择USB串口
+    QString targetPort;
+    foreach(const QSerialPortInfo &info, serialPortInfo) {
+        if(info.description().contains("USB")) {
+            targetPort = info.portName();
+            break;
+        }
+    }
+    
+    serialPort = new QSerialPort;
+    serialPort->setPortName(targetPort);
+    serialPort->setBaudRate(QSerialPort::Baud115200);
+    serialPort->setDataBits(QSerialPort::Data8);
+    serialPort->setParity(QSerialPort::NoParity);
+    serialPort->setStopBits(QSerialPort::OneStop);
+    
+    if (!serialPort->open(QIODevice::ReadWrite)) {
+        qDebug() << "Failed to open serial port!";
+        return;
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- 性能监测图表 -->
+        <div class="card-bg rounded-xl p-8 mb-12 fade-in">
+            <h2 class="text-3xl font-bold mb-6 flex items-center">
+                <i class="fas fa-tachometer-alt highlight-color mr-4"></i>
+                系统性能监测
+            </h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div>
+                    <canvas id="performanceChart" width="400" height="200"></canvas>
+                </div>
+                <div>
+                    <canvas id="sensorDataChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 页面加载动画
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // 代码高亮
+        hljs.highlightAll();
+
+        // 性能监测图表
+        const performanceCtx = document.getElementById('performanceChart').getContext('2d');
+        new Chart(performanceCtx, {
+            type: 'bar',
+            data: {
+                labels: ['CPU占用率', '内存使用', '网络延迟', '串口响应'],
+                datasets: [{
+                    label: '系统性能指标',
+                    data: [25, 45, 12, 8],
+                    backgroundColor: [
+                        'rgba(0, 174, 239, 0.7)',
+                        'rgba(0, 174, 239, 0.6)',
+                        'rgba(0, 174, 239, 0.5)',
+                        'rgba(0, 174, 239, 0.4)'
+                    ],
+                    borderColor: '#00AEEF',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { labels: { color: '#ffffff' } },
+                    title: { display: true, text: '系统资源占用情况', color: '#00AEEF' }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { color: '#ffffff' },
+                        grid: { color: '#333333' }
+                    },
+                    x: {
+                        ticks: { color: '#ffffff' },
+                        grid: { color: '#333333' }
+                    }
+                }
+            }
+        });
+
+        // 传感器数据趋势图表
+        const sensorCtx = document.getElementById('sensorDataChart').getContext('2d');
+        new Chart(sensorCtx, {
+            type: 'line',
+            data: {
+                labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
+                datasets: [{
+                    label: '温度 (°C)',
+                    data: [22, 20, 25, 28, 26, 24],
+                    borderColor: '#00AEEF',
+                    backgroundColor: 'rgba(0, 174, 239, 0.1)',
+                    tension: 0.4
+                }, {
+                    label: '湿度 (%)',
+                    data: [65, 70, 60, 55, 58, 62],
+                    borderColor: '#4CAF50',
+                    backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { labels: { color: '#ffffff' } },
+                    title: { display: true, text: '24小时传感器数据趋势', color: '#00AEEF' }
+                },
+                scales: {
+                    y: {
+                        ticks: { color: '#ffffff' },
+                        grid: { color: '#333333' }
+                    },
+                    x: {
+                        ticks: { color: '#ffffff' },
+                        grid: { color: '#333333' }
+                    }
+                }
+            }
+        });
+
+        // 添加更多技术架构卡片
+        const additionalCards = `
+            <!-- 硬件平台卡片 -->
+            <div class="card-bg rounded-xl p-8 mb-12 fade-in">
+                <h2 class="text-3xl font-bold mb-6 flex items-center">
+                    <i class="fas fa-memory highlight-color mr-4"></i>
+                    硬件平台架构
+                </h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="card-bg rounded-lg p-6 text-center">
+                        <i class="fas fa-microchip text-3xl highlight-color mb-3"></i>
+                        <h3 class="text-lg font-bold mb-2">龙芯处理器</h3>
+                        <div class="text-xs text-gray-500 mb-2">Loongson CPU</div>
+                        <p class="text-sm text-gray-400">基于MIPS架构的自主可控处理器平台</p>
+                    </div>
+
+                    <div class="card-bg rounded-lg p-6 text-center">
+                        <i class="fas fa-wifi text-3xl highlight-color mb-3"></i>
+                        <h3 class="text-lg font-bold mb-2">ESP8266模块</h3>
+                        <div class="text-xs text-gray-500 mb-2">WiFi Module</div>
+                        <p class="text-sm text-gray-400">低功耗WiFi通信模块，支持AP和STA模式</p>
+                    </div>
+
+                    <div class="card-bg rounded-lg p-6 text-center">
+                        <i class="fas fa-thermometer-half text-3xl highlight-color mb-3"></i>
+                        <h3 class="text-lg font-bold mb-2">多传感器阵列</h3>
+                        <div class="text-xs text-gray-500 mb-2">Sensor Array</div>
+                        <p class="text-sm text-gray-400">温湿度、光照、烟雾浓度传感器集成</p>
+                    </div>
+
+                    <div class="card-bg rounded-lg p-6 text-center">
+                        <i class="fas fa-plug text-3xl highlight-color mb-3"></i>
+                        <h3 class="text-lg font-bold mb-2">串口通信</h3>
+                        <div class="text-xs text-gray-500 mb-2">Serial Communication</div>
+                        <p class="text-sm text-gray-400">RS232/USB串口，支持115200波特率</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 软件架构卡片 -->
+            <div class="card-bg rounded-xl p-8 mb-12 fade-in">
+                <h2 class="text-3xl font-bold mb-6 flex items-center">
+                    <i class="fas fa-cogs highlight-color mr-4"></i>
+                    软件架构设计
+                </h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="card-bg rounded-lg p-6">
+                        <i class="fas fa-layer-group text-2xl highlight-color mb-3"></i>
+                        <h3 class="text-xl font-bold mb-2">分层架构</h3>
+                        <div class="text-xs text-gray-500 mb-2">Layered Architecture</div>
+                        <p class="text-sm text-gray-400">UI层、业务逻辑层、数据访问层清晰分离，便于维护和扩展</p>
+                    </div>
+
+                    <div class="card-bg rounded-lg p-6">
+                        <i class="fas fa-sync-alt text-2xl highlight-color mb-3"></i>
+                        <h3 class="text-xl font-bold mb-2">异步处理</h3>
+                        <div class="text-xs text-gray-500 mb-2">Asynchronous Processing</div>
+                        <p class="text-sm text-gray-400">基于Qt信号槽机制的异步事件处理，避免界面阻塞</p>
+                    </div>
+
+                    <div class="card-bg rounded-lg p-6">
+                        <i class="fas fa-shield-alt text-2xl highlight-color mb-3"></i>
+                        <h3 class="text-xl font-bold mb-2">异常处理</h3>
+                        <div class="text-xs text-gray-500 mb-2">Exception Handling</div>
+                        <p class="text-sm text-gray-400">完善的错误处理机制，支持节点离线检测和自动重连</p>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // 在页面加载完成后插入额外内容
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.querySelector('.container');
+            const lastCard = container.querySelector('.card-bg:last-of-type');
+            lastCard.insertAdjacentHTML('afterend', additionalCards);
+
+            // 添加核心算法和技术特性
+            const algorithmSection = `
+                <!-- 核心算法卡片 -->
+                <div class="card-bg rounded-xl p-8 mb-12 fade-in">
+                    <h2 class="text-3xl font-bold mb-6 flex items-center">
+                        <i class="fas fa-brain highlight-color mr-4"></i>
+                        核心算法与技术特性
+                    </h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div class="card-bg rounded-lg p-6 text-center">
+                            <div class="text-4xl font-bold highlight-color mb-2">滑动窗口</div>
+                            <div class="text-sm text-gray-400 mb-1">Sliding Window</div>
+                            <div class="text-xs text-gray-500">数据平滑算法</div>
+                        </div>
+
+                        <div class="card-bg rounded-lg p-6 text-center">
+                            <div class="text-4xl font-bold highlight-color mb-2">阈值检测</div>
+                            <div class="text-sm text-gray-400 mb-1">Threshold Detection</div>
+                            <div class="text-xs text-gray-500">智能预警机制</div>
+                        </div>
+
+                        <div class="card-bg rounded-lg p-6 text-center">
+                            <div class="text-4xl font-bold highlight-color mb-2">状态机</div>
+                            <div class="text-sm text-gray-400 mb-1">State Machine</div>
+                            <div class="text-xs text-gray-500">节点状态管理</div>
+                        </div>
+
+                        <div class="card-bg rounded-lg p-6 text-center">
+                            <div class="text-4xl font-bold highlight-color mb-2">JSON解析</div>
+                            <div class="text-sm text-gray-400 mb-1">JSON Parsing</div>
+                            <div class="text-xs text-gray-500">数据格式处理</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 系统特性卡片 -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+                    <div class="card-bg rounded-lg p-6 fade-in">
+                        <i class="fas fa-bolt text-2xl highlight-color mb-3"></i>
+                        <h3 class="text-xl font-bold mb-2">低功耗设计</h3>
+                        <div class="text-xs text-gray-500 mb-2">Low Power Design</div>
+                        <p class="text-sm text-gray-400">ESP8266深度睡眠模式，功耗低至15μA，延长设备续航时间</p>
+                    </div>
+
+                    <div class="card-bg rounded-lg p-6 fade-in">
+                        <i class="fas fa-exclamation-triangle text-2xl highlight-color mb-3"></i>
+                        <h3 class="text-xl font-bold mb-2">智能预警</h3>
+                        <div class="text-xs text-gray-500 mb-2">Smart Alert</div>
+                        <p class="text-sm text-gray-400">多级预警机制，支持温度、湿度、烟雾浓度异常检测</p>
+                    </div>
+
+                    <div class="card-bg rounded-lg p-6 fade-in">
+                        <i class="fas fa-database text-2xl highlight-color mb-3"></i>
+                        <h3 class="text-xl font-bold mb-2">数据存储</h3>
+                        <div class="text-xs text-gray-500 mb-2">Data Storage</div>
+                        <p class="text-sm text-gray-400">本地数据缓存和云端数据同步，确保数据安全性</p>
+                    </div>
+                </div>
+
+                <!-- AT指令处理代码 -->
+                <div class="code-card rounded-lg p-6 mb-12 fade-in">
+                    <h3 class="text-lg font-bold mb-3 highlight-color">ESP8266 AT指令处理函数</h3>
+                    <pre><code class="language-cpp">bool taskserialport::sendATCommand(const std::string& command,
+                                                   const std::string& expected,
+                                                   int timeout) {
+    // 清空输入缓冲区
+    serialPort->clear(QSerialPort::Input);
+
+    // 发送AT指令
+    QByteArray data(command.data(), command.size());
+    serialPort->write(data);
+
+    QByteArray response;
+    QElapsedTimer timer;
+    timer.start();
+
+    // 等待响应
+    while (timer.elapsed() < timeout) {
+        if (serialPort->waitForReadyRead(50)) {
+            response += serialPort->readAll();
+
+            // 检查期望响应
+            if (response.contains(expected.c_str())) {
+                qDebug() << "GOT EXPECTED WORD!";
+                return true;
+            }
+
+            // 检查错误响应
+            if (response.contains("ERROR") || response.contains("FAIL")) {
+                qDebug() << "ERROR RESPONSE:" << response;
+                return false;
+            }
+        }
+    }
+    return false;
+}</code></pre>
+                </div>
+
+                <!-- 技术优势总结 -->
+                <div class="card-bg rounded-xl p-8 mb-12 fade-in">
+                    <h2 class="text-3xl font-bold mb-6 flex items-center">
+                        <i class="fas fa-star highlight-color mr-4"></i>
+                        技术优势与创新点
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-xl font-bold mb-4 highlight-color">技术创新</h3>
+                            <ul class="space-y-3 text-gray-300">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle highlight-color mr-3 mt-1"></i>
+                                    <span>基于龙芯自主可控平台的嵌入式系统设计</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle highlight-color mr-3 mt-1"></i>
+                                    <span>多线程并发处理架构，提升系统响应性能</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle highlight-color mr-3 mt-1"></i>
+                                    <span>MQTT协议与华为云IoT平台深度集成</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle highlight-color mr-3 mt-1"></i>
+                                    <span>Qt Charts实时数据可视化技术应用</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-4 highlight-color">应用价值</h3>
+                            <ul class="space-y-3 text-gray-300">
+                                <li class="flex items-start">
+                                    <i class="fas fa-arrow-right highlight-color mr-3 mt-1"></i>
+                                    <span>工业环境监测与安全预警系统</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-arrow-right highlight-color mr-3 mt-1"></i>
+                                    <span>智能农业大棚环境控制系统</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-arrow-right highlight-color mr-3 mt-1"></i>
+                                    <span>智慧城市环境质量监测网络</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-arrow-right highlight-color mr-3 mt-1"></i>
+                                    <span>数据中心机房环境监控系统</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            lastCard.insertAdjacentHTML('afterend', algorithmSection);
+
+            // 重新观察新添加的元素
+            document.querySelectorAll('.fade-in:not(.visible)').forEach(el => {
+                observer.observe(el);
+            });
+
+            // 重新应用代码高亮
+            hljs.highlightAll();
+
+            // 添加技术规格表
+            const techSpecsSection = `
+                <!-- 技术规格表 -->
+                <div class="card-bg rounded-xl p-8 mb-12 fade-in">
+                    <h2 class="text-3xl font-bold mb-6 flex items-center">
+                        <i class="fas fa-list-alt highlight-color mr-4"></i>
+                        技术规格参数
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="space-y-4">
+                            <h3 class="text-lg font-bold highlight-color border-b border-gray-600 pb-2">硬件规格</h3>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">处理器平台:</span>
+                                    <span class="text-white">龙芯 MIPS64</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">通信模块:</span>
+                                    <span class="text-white">ESP8266 WiFi</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">串口规格:</span>
+                                    <span class="text-white">RS232/USB</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">传感器数量:</span>
+                                    <span class="text-white">4类×3节点</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4">
+                            <h3 class="text-lg font-bold highlight-color border-b border-gray-600 pb-2">软件架构</h3>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">开发框架:</span>
+                                    <span class="text-white">Qt 5.15.2/6.8.3</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">编程语言:</span>
+                                    <span class="text-white">C++17</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">通信协议:</span>
+                                    <span class="text-white">MQTT 3.1.1</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">图表引擎:</span>
+                                    <span class="text-white">Qt Charts</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4">
+                            <h3 class="text-lg font-bold highlight-color border-b border-gray-600 pb-2">性能参数</h3>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">数据采集频率:</span>
+                                    <span class="text-white">1Hz</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">响应延迟:</span>
+                                    <span class="text-white">&lt;100ms</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">离线检测:</span>
+                                    <span class="text-white">5秒超时</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">数据精度:</span>
+                                    <span class="text-white">±0.1°C/±2%RH</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // 添加页脚
+            const footerSection = `
+                <!-- 页脚 -->
+                <footer class="text-center py-12 border-t border-gray-800">
+                    <div class="mb-6">
+                        <div class="w-16 h-1 tech-gradient mx-auto rounded-full mb-4"></div>
+                        <h3 class="text-2xl font-bold highlight-color mb-2">龙芯多节点环境监测系统</h3>
+                        <p class="text-gray-400">Loongson Multi-Node Environmental Monitoring System</p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                        <div>
+                            <h4 class="font-bold mb-2 highlight-color">核心技术</h4>
+                            <p class="text-sm text-gray-400">Qt框架 • MQTT通信 • 多线程架构</p>
+                        </div>
+                        <div>
+                            <h4 class="font-bold mb-2 highlight-color">硬件平台</h4>
+                            <p class="text-sm text-gray-400">龙芯处理器 • ESP8266 • 多传感器</p>
+                        </div>
+                        <div>
+                            <h4 class="font-bold mb-2 highlight-color">应用场景</h4>
+                            <p class="text-sm text-gray-400">工业监测 • 智能农业 • 环境监控</p>
+                        </div>
+                    </div>
+                    <div class="text-sm text-gray-500">
+                        <p>© 2024 龙芯多节点环境监测系统 - 技术演示文档</p>
+                        <p class="mt-2">基于自主可控龙芯平台的嵌入式物联网解决方案</p>
+                    </div>
+                </footer>
+            `;
+
+            // 插入技术规格和页脚
+            const container = document.querySelector('.container');
+            container.insertAdjacentHTML('beforeend', techSpecsSection);
+            container.insertAdjacentHTML('afterend', footerSection);
+
+            // 重新观察新添加的元素
+            document.querySelectorAll('.fade-in:not(.visible)').forEach(el => {
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>
