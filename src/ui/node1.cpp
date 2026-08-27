@@ -382,3 +382,11 @@ void node1::on_pushButton_data_clicked()
     file.close();
 }
 
+/* 故障诊断结果显示：只处理属于本节点(1)的诊断，橙色追加到日志区。*/
+void node1::Slot_Diagnosis(unsigned int node, const QString &reason)
+{
+    if (node != 1) return;
+    ui->textEdit_log->setTextColor(QColor(255, 140, 0));   // 橙色
+    ui->textEdit_log->append(stringCurrentTimeMessage + ": [诊断] 节点一 " + reason);
+}
+

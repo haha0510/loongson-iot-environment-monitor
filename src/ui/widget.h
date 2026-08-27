@@ -29,6 +29,7 @@
 #include <QThread>//qt线程
 
 #include <QMessageBox>//窗口类
+#include <QLabel>
 #include <QString>
 #include <QSerialPortInfo>//串口信息类
 #include <QSerialPort>
@@ -44,6 +45,9 @@
 #include "taskserialport.h"
 #include "taskwarning.h"
 #include "taskmqtt.h"
+#include "taskpwm.h"
+#include "tasksysmonitor.h"
+#include "taskdiagnosis.h"
 
 //曲线X,Y轴范围的最大值
 #define MAX_X       9
@@ -74,6 +78,9 @@ public:
     QThread *threadMqtt;
     QThread *threadOneSecondTimer;
     QThread *threadWarning;//警告和信息显示线程
+    QThread *threadPwm;        //呼吸灯 PWM 线程
+    QThread *threadSysMonitor; //主机健康采集线程
+    QThread *threadDiagnosis;  //传感器故障诊断线程
 
     QTimer *serialTimer;
     QTimer *oneSecondTimer;
@@ -101,11 +108,15 @@ private slots:
      void on_node3Bt_clicked();
     // 节点下线检测函数
     void checkNodeOfflineStatus();
+    void Slot_UpdateSysHealth(double cpuC, double availMB, double totalMB);//主机健康面板刷新
      void on_pushButton_clicked();
 
  private:
     Ui::Widget *ui;
      QNetworkAccessManager *manager;
+     QLabel *labelCpuTemp = nullptr;   //主机健康面板：CPU 温度
+     QLabel *labelMemAvail = nullptr;  //主机健康面板：可用内存
+     QLabel *labelMemUsage = nullptr;  //主机健康面板：内存占用率
 };
 
 // 节点下线检测相关变量

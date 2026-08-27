@@ -10,6 +10,7 @@ inline const QString kMqttHostName = QStringLiteral("replace-with-your-mqtt-host
 inline const QString kMqttClientId = QStringLiteral("replace-with-your-client-id");
 inline const QString kWifiAccessPointSsid = QStringLiteral("replace-with-your-wifi-ssid");
 inline const QString kWifiAccessPointPassword = QStringLiteral("replace-with-your-wifi-password");
+inline const QString kDeepSeekApiKey = QStringLiteral("replace-with-your-deepseek-api-key");
 }
 
 #endif // DEVICE_CONFIG_H

@@ -42,6 +42,7 @@ private slots:
     void Slot_RefreshTime();//更新时间
 
     void Slot_Warning(unsigned int error_index);//警告和数据信息
+    void Slot_Diagnosis(unsigned int node, const QString &reason);//故障诊断显示
 
 private:
     Ui::node3 *ui;

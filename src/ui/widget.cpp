@@ -1,5 +1,12 @@
 #include "widget.h"
 #include "ui_widget.h"
+#include "device_config.h"
+#include <QGroupBox>
+#include <QVBoxLayout>
+#include <QGridLayout>
+#include <QLabel>
+
+#define CPU_WARN_C 85   /* 主机健康面板：CPU 温度标红阈值(℃) */
 
 
 /* Part of CurrentTime */
@@ -210,6 +217,42 @@ Widget::Widget(QWidget *parent)
     connect(myWarning, SIGNAL(Signal_Warning(uint)), node2_ui, SLOT(Slot_Warning(uint))); //node2显示数据----
     connect(myWarning, SIGNAL(Signal_Warning(uint)), node3_ui, SLOT(Slot_Warning(uint)));//node3显示数据----
 
+    /* Part of PWM 呼吸灯（超阈值报警，龙芯板载 PWM）*/
+    taskpwm *myPwm = new taskpwm;
+    threadPwm = new QThread();
+    myPwm->moveToThread(threadPwm);
+    connect(threadPwm, &QThread::started, myPwm, &taskpwm::Init);
+    connect(myWarning, &taskwarning::Signal_Warning, myPwm, &taskpwm::Slot_Alarm);//告警→呼吸/熄灭
+    threadPwm->start();
+
+    /* Part of System Health（主机健康面板：代码方式创建，放主网格左上空白区）*/
+    QGroupBox *healthBox = new QGroupBox("主机健康", this);
+    QVBoxLayout *healthLay = new QVBoxLayout(healthBox);
+    labelCpuTemp  = new QLabel("CPU温度: --", healthBox);
+    labelMemAvail = new QLabel("可用内存: --", healthBox);
+    labelMemUsage = new QLabel("内存占用: --", healthBox);
+    healthLay->addWidget(labelCpuTemp);
+    healthLay->addWidget(labelMemAvail);
+    healthLay->addWidget(labelMemUsage);
+    if (QGridLayout *g = qobject_cast<QGridLayout *>(this->layout()))
+        g->addWidget(healthBox, 0, 3, 1, 4);   //row0, col3-6 空白区
+
+    tasksysmonitor *mySys = new tasksysmonitor;
+    threadSysMonitor = new QThread();
+    mySys->moveToThread(threadSysMonitor);
+    connect(threadSysMonitor, &QThread::started, mySys, &tasksysmonitor::Start);
+    connect(mySys, &tasksysmonitor::Signal_SysHealth, this, &Widget::Slot_UpdateSysHealth);
+    threadSysMonitor->start();
+
+    /* Part of Diagnosis（传感器故障诊断，规则+统计法）*/
+    taskdiagnosis *myDiag = new taskdiagnosis;
+    threadDiagnosis = new QThread();
+    myDiag->moveToThread(threadDiagnosis);
+    connect(this, &Widget::Signal_SerialPortProcess, myDiag, &taskdiagnosis::TaskDiagnosis);
+    connect(myDiag, SIGNAL(Signal_Diagnosis(uint,QString)), node1_ui, SLOT(Slot_Diagnosis(uint,QString)));
+    connect(myDiag, SIGNAL(Signal_Diagnosis(uint,QString)), node2_ui, SLOT(Slot_Diagnosis(uint,QString)));
+    connect(myDiag, SIGNAL(Signal_Diagnosis(uint,QString)), node3_ui, SLOT(Slot_Diagnosis(uint,QString)));
+    threadDiagnosis->start();
 }
 
 Widget::~Widget()
@@ -537,7 +580,7 @@ void Widget::on_node3Bt_clicked()
 //     request.setUrl(QUrl("https://api.deepseek.com/chat/completions"));
 //     request.setHeader(QNetworkRequest::ContentTypeHeader,"application/json");
 //     request.setRawHeader("Accept","application/json");
-//     request.setRawHeader("Authorization","Bearer sk-69ca99b4265342d395ca702684102d1f");
+//     request.setRawHeader("Authorization","Bearer <改为 DeviceConfig::kDeepSeekApiKey>");
 
 //     QJsonArray messages;
 
@@ -657,7 +700,8 @@ void Widget::on_pushButton_clicked()
     request.setUrl(QUrl("https://api.deepseek.com/chat/completions"));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     request.setRawHeader("Accept", "application/json");
-    request.setRawHeader("Authorization", "Bearer sk-69ca99b4265342d395ca702684102d1f");
+    request.setRawHeader("Authorization",
+                          ("Bearer " + DeviceConfig::kDeepSeekApiKey).toUtf8());
 
     QJsonArray messages;
 
@@ -725,5 +769,28 @@ void Widget::on_pushButton_clicked()
         ui->outPutEdit->insertPlainText("\n\n");
         reply->deleteLater();
     });
+}
+
+/* 主机健康面板刷新：tasksysmonitor 每 2s 发来一次 CPU 温度 / 内存。
+ * 负值表示 N/A（非 Linux 平台或读失败）。CPU 超警戒温度时标红。 */
+void Widget::Slot_UpdateSysHealth(double cpuC, double availMB, double totalMB)
+{
+    if (cpuC < 0) {
+        labelCpuTemp->setText("CPU温度: N/A");
+        labelCpuTemp->setStyleSheet("");
+    } else {
+        labelCpuTemp->setText(QString("CPU温度: %1 ℃").arg(cpuC, 0, 'f', 1));
+        labelCpuTemp->setStyleSheet(cpuC >= CPU_WARN_C ? "color: red;" : "color: black;");
+    }
+
+    if (availMB < 0 || totalMB <= 0) {
+        labelMemAvail->setText("可用内存: N/A");
+        labelMemUsage->setText("内存占用: N/A");
+    } else {
+        labelMemAvail->setText(QString("可用内存: %1 / %2 MB")
+                                   .arg(availMB, 0, 'f', 0).arg(totalMB, 0, 'f', 0));
+        double usage = (totalMB - availMB) / totalMB * 100.0;
+        labelMemUsage->setText(QString("内存占用: %1 %").arg(usage, 0, 'f', 1));
+    }
 }
 

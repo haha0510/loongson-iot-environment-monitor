@@ -20,6 +20,9 @@ SOURCES += \
     src/services/taskmqtt.cpp \
     src/services/taskserialport.cpp \
     src/services/taskwarning.cpp \
+    src/services/taskpwm.cpp \
+    src/services/tasksysmonitor.cpp \
+    src/services/taskdiagnosis.cpp \
     third_party/mqtt/qmqtt_client.cpp \
     third_party/mqtt/qmqtt_client_p.cpp \
     third_party/mqtt/qmqtt_frame.cpp \
@@ -41,6 +44,9 @@ HEADERS += \
     src/services/taskmqtt.h \
     src/services/taskserialport.h \
     src/services/taskwarning.h \
+    src/services/taskpwm.h \
+    src/services/tasksysmonitor.h \
+    src/services/taskdiagnosis.h \
     src/config/device_config.example.h \
     third_party/mqtt/qmqtt.h \
     third_party/mqtt/qmqtt_client.h \
