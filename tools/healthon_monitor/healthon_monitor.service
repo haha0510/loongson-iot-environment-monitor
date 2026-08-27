@@ -1,0 +1,45 @@
+# healthon_monitor —— 龙芯 2K1000LA 健康看门狗 systemd 服务单元
+#
+# 安装（板上）：
+#   sudo make install                         # 或手动拷贝下面两处
+#   sudo cp healthon_monitor /usr/local/bin/
+#   sudo cp healthon_monitor.service /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now healthon_monitor
+#
+# 查看：
+#   systemctl status healthon_monitor
+#   journalctl -u healthon_monitor                    # 仅启动/退出等零星输出
+#   tail -f /var/log/healthon/healthon_monitor.log    # 采样与处置明细在这里
+#
+# 【为什么 Type=forking】守护进程自身已实现标准 double-fork + flock 单实例 + pid
+# 文件；daemon 模式下不 printf、三标准流指向 /dev/null，不会污染 journal。用
+# forking 直接复用这套成熟机制，比强行改成前台 simple 更稳、日志更干净。
+#
+# 【必须 root】reboot、kill 其它进程、读任意进程 /proc/*/status 都需要 root，
+# 故不设 User=（默认以 root 运行）。
+#
+# 【首次上线建议】先改成演练版观察几天再上真动作：把 ExecStart 末尾加 -n，
+# 或临时 `sudo systemctl edit healthon_monitor` 加 Environment=HM_DRY_RUN=1。
+
+[Unit]
+Description=HealthOn Monitor (Loongson 2K1000LA host health watchdog)
+# 需要 /var/log 已挂载（重启历史/日志要落到持久化分区）
+After=local-fs.target
+# 异常时防止疯狂重启：10 分钟内最多拉起 5 次，超了停下等人工
+StartLimitIntervalSec=600
+StartLimitBurst=5
+
+[Service]
+Type=forking
+PIDFile=/var/log/healthon/healthon_monitor.pid
+ExecStart=/usr/local/bin/healthon_monitor -d
+# 崩溃/被 OOM 杀掉时自动拉起；systemctl stop 触发的正常退出(返回0)不算失败、不重启
+Restart=on-failure
+RestartSec=5
+# stop 时发 SIGTERM，守护进程会在 ≤1s 内优雅退出并 sync 落盘
+KillSignal=SIGTERM
+TimeoutStopSec=30
+
+[Install]
+WantedBy=multi-user.target
